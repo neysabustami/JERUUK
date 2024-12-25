@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemesanan Jeruk Online</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff9800, #ff5722); /* Gradasi warna orange */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1, h2, h3 {
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+        }
+
+        /* Mengubah warna teks "Pemesanan Jeruk Online" menjadi hitam dan font yang tegas */
+        h2.section-title {
+            color: black; /* Mengubah warna teks menjadi hitam */
+            font-size: 2rem;
+            font-weight: bold; /* Menjadikan font lebih tegas */
+            text-align: center;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Page Styles */
+        .dashboard-page, .order-page, .payment-page {
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            width: 100%;
+            display: none;
+            animation: slideIn 1s ease-out;
+        }
+
+        .dashboard-page {
+            display: block;
+        }
+
+        /* Button Styles */
+        .button {
+            padding: 15px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin: 10px 0;
+        }
+
+        .button:hover {
+            background-color: #f44336;
+            transform: scale(1.05);
+        }
+
+        .button-small {
+            width: auto;
+            padding: 10px 20px;
+            font-size: 1rem;
+            margin: 5px;
+        }
+
+        /* Input and Select */
+        input, select {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 2px solid #ff5722;
+            font-size: 1rem;
+            background-color: #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #f44336;
+            outline: none;
+        }
+
+        /* Section and Article Styles */
+        .section-title {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Total Price and Shipping Styles */
+        #total-price, #shipping-cost {
+            color: black; /* Mengubah warna menjadi hitam */
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        /* Notification Styles */
+        .notification {
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+
+            .button, .button-small {
+                font-size: 1rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Halaman Dashboard -->
+    <div class="dashboard-page">
+        <div class="container">
+            <h2 class="section-title">Pemesanan Jeruk Online</h2>
+            <p>Selamat datang di toko jeruk online! Lakukan pemesanan sekarang juga!</p>
+
+            <!-- Tombol Pemesanan Jeruk -->
+            <button class="button button-small" id="order-btn">Pemesanan Jeruk</button>
+        </div>
+    </div>
+
+    <!-- Halaman Pemesanan Jeruk -->
+    <div class="order-page">
+        <div class="container">
+            <h2 class="section-title">Pemesanan Jeruk</h2>
+            <form id="order-form">
+                <input type="text" id="buyer-name" placeholder="Nama Pembeli" required>
+                <input type="text" id="buyer-location" placeholder="Lokasi Pengiriman" required>
+
+                <select id="fruit-type" required>
+                    <option value="" disabled selected>Pilih Jenis Jeruk</option>
+                    <option value="Jeruk Bali" data-price="25000">Jeruk Bali (Rp 25,000 /kg)</option>
+                    <option value="Jeruk Manis" data-price="22000">Jeruk Manis (Rp 22,000 /kg)</option>
+                    <option value="Jeruk Nipis" data-price="20000">Jeruk Nipis (Rp 20,000 /kg)</option>
+                </select>
+
+                <input type="number" id="fruit-weight" placeholder="Berat (kg)" required>
+
+                <select id="shipping-type" required>
+                    <option value="" disabled selected>Pilih Jenis Pengiriman</option>
+                    <option value="Reguler">Reguler (3-5 hari)</option>
+                    <option value="Hemat">Hemat (7-10 hari)</option>
+                </select>
+
+                <h3 id="total-price">Total Harga: Rp 0</h3>
+                <h3 id="shipping-cost">Ongkos Kirim: Rp 0</h3> <!-- Menampilkan ongkos kirim -->
+
+                <button type="button" class="button" id="checkout-btn">Checkout</button>
+                <button type="button" class="button button-small" id="back-dashboard-btn">Kembali ke Dashboard</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Halaman Pembayaran -->
+    <div class="payment-page">
+        <div class="container">
+            <h2 class="section-title">Pembayaran</h2>
+            <p>Silakan pilih metode pembayaran:</p>
+            <button class="button button-small" id="cod-btn">Bayar COD</button>
+            <button class="button button-small" id="bank-transfer-btn">Transfer Bank</button>
+
+            <button class="button button-small" id="back-order-btn">Kembali ke Pemesanan</button>
+        </div>
+    </div>
+
+    <!-- Notifikasi Pembayaran Berhasil -->
+    <div class="notification" id="payment-success-notification">
+        Pembayaran berhasil! Terima kasih atas pesanan Anda.
+    </div>
+
+    <script>
+        let totalPrice = 0;
+        let shippingCost = 0;
+
+        // Fungsi untuk menampilkan halaman pemesanan
+        function showOrderPage() {
+            document.querySelector('.dashboard-page').style.display = 'none';
+            document.querySelector('.order-page').style.display = 'block';
+        }
+
+        // Fungsi untuk menampilkan halaman pembayaran
+        function showPaymentPage() {
+            document.querySelector('.order-page').style.display = 'none';
+            document.querySelector('.payment-page').style.display = 'block';
+        }
+
+        // Fungsi untuk menghitung total harga dan ongkos kirim
+        function calculateTotal() {
+            const fruitType = document.getElementById('fruit-type');
+            const fruitWeight = document.getElementById('fruit-weight');
+            const shippingType = document.getElementById('shipping-type');
+
+            if (fruitType && fruitWeight && shippingType) {
+                let fruitPrice = parseInt(fruitType.options[fruitType.selectedIndex].getAttribute('data-price')) || 0;
+                let weight = parseFloat(fruitWeight.value) || 0;
+                shippingCost = shippingType.value === 'Reguler' ? 10000 : 5000;
+                totalPrice = (fruitPrice * weight) + shippingCost;
+
+                // Menampilkan total harga dan ongkos kirim
+                document.getElementById('total-price').textContent = `Total Harga: Rp ${totalPrice}`;
+                document.getElementById('shipping-cost').textContent = `Ongkos Kirim: Rp ${shippingCost}`;
+            }
+        }
+
+        // Event listener untuk tombol pemesanan
+        document.getElementById('order-btn').addEventListener('click', showOrderPage);
+
+        // Event listener untuk checkout
+        document.getElementById('checkout-btn').addEventListener('click', function() {
+            showPaymentPage();
+        });
+
+        // Event listener untuk tombol kembali ke dashboard
+        document.getElementById('back-dashboard-btn').addEventListener('click', function() {
+            document.querySelector('.order-page').style.display = 'none';
+            document.querySelector('.dashboard-page').style.display = 'block';
+        });
+
+        // Event listener untuk tombol kembali ke pemesanan
+        document.getElementById('back-order-btn').addEventListener('click', function() {
+            document.querySelector('.payment-page').style.display = 'none';
+            document.querySelector('.order-page').style.display = 'block';
+        });
+
+        // Event listener untuk pemilihan jenis jeruk, berat, dan pengiriman
+        document.getElementById('fruit-type').addEventListener('change', calculateTotal);
+        document.getElementById('fruit-weight').addEventListener('input', calculateTotal);
+        document.getElementById('shipping-type').addEventListener('change', calculateTotal);
+
+        // Event listener untuk metode pembayaran
+        document.getElementById('cod-btn').addEventListener('click', function() {
+            // Tampilkan notifikasi pembayaran berhasil
+            document.getElementById('payment-success-notification').style.display = 'block';
+
+            // Kembali ke halaman dashboard setelah 2 detik
+            setTimeout(function() {
+                document.querySelector('.payment-page').style.display = 'none';
+                document.querySelector('.dashboard-page').style.display = 'block';
+                document.getElementById('payment-success-notification').style.display = 'none';
+            }, 2000);
+        });
+
+        document.getElementById('bank-transfer-btn').addEventListener('click', function() {
+            // Tampilkan notifikasi pembayaran berhasil
+            document.getElementById('payment-success-notification').style.display = 'block';
+
+            // Kembali ke halaman dashboard setelah 2 detik
+            setTimeout(function() {
+                document.querySelector('.payment-page').style.display = 'none';
+                document.querySelector('.dashboard-page').style.display = 'block';
+                document.getElementById('payment-success-notification').style.display = 'none';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
